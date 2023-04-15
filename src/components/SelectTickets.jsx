@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-export function SelectTickets({show, onSelectTickets}) {
+export default function SelectTickets({show, onSelectTickets}) {
     const [tickets, setTickets] = useState(0);
-    
+
     return(
         <div>
             <h3>Purchase Tickets</h3>
