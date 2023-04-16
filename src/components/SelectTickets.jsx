@@ -1,33 +1,34 @@
 import { useState } from "react";
-
+import { Select, MenuItem, Button, InputLabel } from "@mui/material";
+import Paper from "@mui/material/Paper";
 export default function SelectTickets({show, onSelectTickets}) {
     const [tickets, setTickets] = useState(0);
 
     return(
-        <div>
-            <h3>Purchase Tickets</h3>
-            <h4>{show.group} on {show.date} at {show.arena}</h4>
+        <Paper elevation={3}>
+            <h2>Ticket Selection</h2>
+            <h3>{show.group} on {show.date} at {show.venue}</h3>
             
             <div>
                 Ticket Cost: ${show.ticketCost}
             </div>
             <div>
-                <label>Select number of tickets: </label> 
+                <InputLabel>Select number of tickets: </InputLabel> 
                     <form onSubmit={e => onSelectTickets(e, tickets)}>
                         <select 
                             name="selectedTickets"
                             onChange={e => setTickets(e.target.value)}
                         >
-                            <option>0</option>
+                            <option key={0}>0</option>
                             {
                                 [...Array(10).keys()].map((n) => {
-                                    return <option key={n} value={n+1}>{n+1}</option> 
+                                    return <option key={n+1} value={n+1}>{n+1}</option> 
                                     })
                             }
                         </select>
-                        <button type="submit">Submit</button>
+                        <Button size="small" type="submit">Submit</Button>
                     </form>
             </div>
-        </div>
+        </Paper>
     )
 }

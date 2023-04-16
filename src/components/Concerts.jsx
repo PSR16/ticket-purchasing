@@ -5,12 +5,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
+import Paper from '@mui/material/Paper';
 
 function Concerts({events, onBuyTickets}) {
 
     return (
-        <div>
-            <h3>Upcoming Shows</h3>
+        <Paper elevation={4}>
+            <h2>Upcoming Shows</h2>
             <div>
                 <TableContainer>
                     <Table>
@@ -50,7 +51,7 @@ function Concerts({events, onBuyTickets}) {
                     </Table>
                 </TableContainer>
             </div>
-        </div>
+        </Paper>
     )
 }
 
