@@ -43,6 +43,7 @@ export default function App() {
       { 
         showCheckOut ? 
           <Checkout
+            show={selectedShow}
             numTickets={numTickets}
           />
         : null
