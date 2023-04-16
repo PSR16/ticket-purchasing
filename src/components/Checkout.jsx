@@ -5,7 +5,6 @@ import { Grid, Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 
 function Payment({cardList}) {
-
     return(
         <div>
             {
@@ -21,8 +20,21 @@ function Payment({cardList}) {
     )
 }
 
-export default function Checkout({numTickets, show}) {
-    const [cardList, setCardList] = useState([]);
+function Delivery() {
+    return(
+        <Box sx={{marginLeft:'20px', border: 1, borderColor: 'lightgray', p: 2, width: '90%', borderRadius: 1}}>
+            <h3>Delivery</h3>
+            <div>
+                <b>Mobile Entry - Free</b>
+            </div>
+            <div>
+                {ticketmasterData.mobileEntryText}
+            </div>
+        </Box>
+    )
+}
+
+function PaymentMethod({cardList, updateCardList}) {
     const [addNewPaymentInfo, setAddNewPaymentInfo] = useState(false);
 
     function handleAddPayment() {
@@ -30,6 +42,33 @@ export default function Checkout({numTickets, show}) {
     }
 
     function handleNewPayment(paymentInfo) {
+        updateCardList(paymentInfo);
+        setAddNewPaymentInfo(false);
+    }
+
+    return (
+        <Box sx={{marginLeft:'20px', border: 1, borderColor: 'lightgray', p: 2, width: '90%', height: '50%', borderRadius: 1}}>
+            <h3>Payment</h3>
+            <b>Use Credit / Debit Card</b>
+            <div>
+                {
+                    cardList.length > 0 ? <Payment cardList={cardList}/> : null
+                }
+                {
+                    addNewPaymentInfo ? <AddPayment cardList={cardList} onNewPayment={handleNewPayment} /> : null
+                }
+                <div>
+                    <button onClick={handleAddPayment}>Add New Card</button>
+                </div>
+            </div>
+        </Box>
+    )
+}
+
+export default function Checkout({numTickets, show}) {
+    const [cardList, setCardList] = useState([]);
+    
+    function updateCardList(paymentInfo) {
         let id = cardList.length + 1;
         
         setCardList((prev) => [
@@ -39,45 +78,26 @@ export default function Checkout({numTickets, show}) {
                 id: id
             }
         ]);
-        setAddNewPaymentInfo(false);
     }
-
+ 
     return(
+        <Box sx={{width: '80%', margin: 'auto'}}>
         <Paper elevation={3}>
         <h2>Checkout</h2>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{textAlign: 'left'}}>
             <Grid container item xs={8} spacing={1}>
                 <Grid item>
-                    <Box sx={{border: 1, borderColor: 'lightgray', p: 2}}>
-                        <h3>Delivery</h3>
-                        <div>
-                            Mobile Entry - Free
-                        </div>
-                        <div>
-                            {ticketmasterData.mobileEntryText}
-                        </div>
-                    </Box>
+                    <Delivery />
                 </Grid>
                 <Grid item>
-                    <Box sx={{border: 1, borderColor: 'lightgray', p: 2}}>
-                        <h3>Payment</h3>
-                        <b>Use Credit / Debit Card</b>
-                        <div>
-                            {
-                                cardList.length > 0 ? <Payment cardList={cardList}/> : null
-                            }
-                            {
-                                addNewPaymentInfo ? <AddPayment cardList={cardList} onNewPayment={handleNewPayment} /> : null
-                            }
-                            <div>
-                                <button onClick={handleAddPayment}>Add New Card</button>
-                            </div>
-                        </div>
-                    </Box>
+                    <PaymentMethod 
+                        cardList={cardList} 
+                        updateCardList={updateCardList}
+                        />
                 </Grid>
             </Grid>
             <Grid item xs={4}>
-                <Box sx={{border: 1, borderColor: 'lightgray', p:2}}>
+                <Box sx={{marginRight:'20px', border: 1, borderColor: 'lightgray', p:2, borderRadius: 1}}>
                     <h3>Total</h3>
                     <div>
                         <h4>Tickets</h4>
@@ -113,5 +133,6 @@ export default function Checkout({numTickets, show}) {
             </Grid>
         </Grid>
         </Paper>
+        </Box>
     )
 }

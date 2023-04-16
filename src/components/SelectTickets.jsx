@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Select, MenuItem, Button, InputLabel } from "@mui/material";
+import { Select, MenuItem, Button, InputLabel, Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 export default function SelectTickets({show, onSelectTickets}) {
     const [tickets, setTickets] = useState(0);
 
     return(
+        <Box sx={{width: '80%', margin: 'auto'}}>
         <Paper elevation={3}>
             <h2>Ticket Selection</h2>
             <h3>{show.group} on {show.date} at {show.venue}</h3>
@@ -30,5 +31,6 @@ export default function SelectTickets({show, onSelectTickets}) {
                     </form>
             </div>
         </Paper>
+    </Box>
     )
 }
