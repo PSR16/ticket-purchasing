@@ -84,11 +84,15 @@ function PaymentMethod({cardList, updateCardList}) {
 }
 
 function Info({card}) {
+
     return(
         <div key={card.id}>
             <div>{card.type} - {card.lastFour}</div>
             <div>{card.nameOnCard} | exp. {card.expirationDate}</div>
-            <div></div>
+            <div>
+                <label>Security Code</label>
+                <input type="text" maxLength={3}/>
+            </div>
         </div>
     )
 }

@@ -53,7 +53,7 @@ export default function AddPayment({onNewPayment}) {
                 </div>
                 <div>
                     <label>Security Code</label>
-                    <input type="number" onChange={(e) => setSecurityCode(e.target.value)}/>
+                    <input type="text" maxLength="3" onChange={(e) => setSecurityCode(e.target.value)}/>
                 </div>
                 <button type="submit">Submit</button>
             </form>
