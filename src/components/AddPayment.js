@@ -14,7 +14,8 @@ export default function AddPayment({onNewPayment}) {
             expirationDate: expirationDate,
             cardNumber: cardNumber,
             securityCode: securityCode,
-            type: type
+            type: type,
+            lastFour: 1234
         }
         //console.log(paymentInfo)
         onNewPayment(paymentInfo);

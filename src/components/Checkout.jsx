@@ -1,24 +1,14 @@
 import { ticketmasterData } from "../data/ticketmasterData";
 import { useState } from "react";
 import AddPayment from "./AddPayment";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Button, FormControlLabel, FormGroup, FormControl, RadioGroup, Radio } from "@mui/material";
 import Paper from "@mui/material/Paper";
-
-function Payment({cardList}) {
-    return(
-        <div>
-            {
-                cardList.map((c) => {
-                    return(
-                        <div key={c.id}>
-                            {c.nameOnCard}
-                        </div>
-                    )
-                })
-            }
-        </div>
-    )
-}
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Checkbox from '@mui/material/Checkbox';
+import Typography from '@mui/material/Typography';
 
 function Delivery() {
     return(
@@ -47,7 +37,7 @@ function PaymentMethod({cardList, updateCardList}) {
     }
 
     return (
-        <Box sx={{marginLeft:'20px', border: 1, borderColor: 'lightgray', p: 2, width: '90%', height: '50%', borderRadius: 1}}>
+        <Box sx={{marginLeft:'20px', border: 1, borderColor: 'lightgray', p: 2, borderRadius: 1}}>
             <h3>Payment</h3>
             <b>Use Credit / Debit Card</b>
             <div>
@@ -58,16 +48,46 @@ function PaymentMethod({cardList, updateCardList}) {
                     addNewPaymentInfo ? <AddPayment cardList={cardList} onNewPayment={handleNewPayment} /> : null
                 }
                 <div>
-                    <button onClick={handleAddPayment}>Add New Card</button>
+                    <Button onClick={handleAddPayment}>Add New Card</Button>
                 </div>
             </div>
         </Box>
     )
 }
 
+function Info({card}) {
+    return(
+        <div key={card.id}>
+            <div>{card.type} - {card.lastFour}</div>
+            <div>{card.name} | exp. {card.expirationDate}</div>
+            <div></div>
+        </div>
+    )
+}
+
+function Payment({cardList}) {
+    return(
+        <FormControl>
+            <RadioGroup>
+            {
+                cardList.map((c) => {
+                    return(
+                        <FormControlLabel value={c.id} control={<Radio />} label={<Info card={c}/>} />
+                    )
+                })
+            }
+            </RadioGroup>
+        </FormControl>
+    )
+}
+
 export default function Checkout({numTickets, show}) {
     const [cardList, setCardList] = useState([]);
-    
+
+    const ticketsTotal = show.ticketCost * numTickets;
+    const serviceFee = ticketmasterData.serviceFee * numTickets;
+    const total = (ticketsTotal + ticketmasterData.orderProcessingFee + serviceFee).toFixed(2);
+
     function updateCardList(paymentInfo) {
         let id = cardList.length + 1;
         
@@ -79,13 +99,13 @@ export default function Checkout({numTickets, show}) {
             }
         ]);
     }
- 
+
     return(
         <Box sx={{width: '80%', margin: 'auto'}}>
         <Paper elevation={3}>
         <h2>Checkout</h2>
         <Grid container spacing={2} sx={{textAlign: 'left'}}>
-            <Grid container item xs={8} spacing={1}>
+            <Grid container item xs={8} spacing={2}>
                 <Grid item>
                     <Delivery />
                 </Grid>
@@ -99,36 +119,48 @@ export default function Checkout({numTickets, show}) {
             <Grid item xs={4}>
                 <Box sx={{marginRight:'20px', border: 1, borderColor: 'lightgray', p:2, borderRadius: 1}}>
                     <h3>Total</h3>
-                    <div>
-                        <h4>Tickets</h4>
-                        <div>
-                            Tickets: ${show.ticketCost} x {numTickets}
-                            <div>${show.ticketCost * numTickets}</div>
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <Typography style={{textAlign: 'center'}}><b>${total}</b></Typography>    
+                        </AccordionSummary>
+                    <AccordionDetails>
+                     <div>
+                            <div>
+                                <h4>Tickets</h4>
+                                Tickets: ${show.ticketCost} x {numTickets}
+                                <span style={{float:'right'}}>${ticketsTotal}</span>
+                            </div>
+                            <div>
+                                <h4>Notes From Seller</h4>
+                                {ticketmasterData.sellerNotes}
+                            </div>
+                            <div>
+                                <h4>Fees</h4>
+                                Service Fee: ${ticketmasterData.serviceFee} x {numTickets}
+                                <span style={{float:'right'}}>${serviceFee}</span>
+                                <span style={{float:'left'}}>Order Processing Fee: </span>
+                                <span style={{float:'right'}}>${ticketmasterData.orderProcessingFee}</span>
+                            </div>
+                            <div>
+                                <h4>Delivery</h4>
+                                Mobile Entry
+                                <span style={{float:'right'}}>{ticketmasterData.mobileEntryFee}</span>
+                            </div>
+                            <div style={{marginTop: '20px'}}>Cancel Order</div>
                         </div>
-                        <h4>Notes From Seller</h4>
-                        <div>
-                            {ticketmasterData.sellerNotes}
-                        </div>
-                        <h4>Fees</h4>
-                        <div>
-                            Service Fee: ${ticketmasterData.serviceFee} x {numTickets}  
-                            <div>${ticketmasterData.serviceFee * numTickets}</div>
-                        </div>
-                        <p>Order Processing Fee: ${ticketmasterData.orderProcessingFee}</p>
-                        <h4>Delivery</h4>
-                        <p>Mobile Entry: {ticketmasterData.mobileEntryFee}</p>
-                    </div>
-                    <div>Cancel Order</div>
-                    <div>
+                        </AccordionDetails>
+                    </Accordion>
+                    <div style={{marginTop: '20px', marginBottom: '20px'}}>
                         <b>*All Sales Final - No Refunds</b>
                     </div>
-                    <div>
-                        <label> 
-                            <input type="checkbox" />
-                            I have read and agree to the current Terms of Use.
-                            </label>
-                        <button type="submit">Place Order</button>
-                    </div>
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox />} label="I have read and agree to the current Terms of Use." />
+                    </FormGroup>
+                    <Button onClick={() => { alert('Thank you for your order!'); }}
+                            variant="contained"
+                            style={{marginTop: '20px'}}>
+                        Place Order
+                        </Button>
                 </Box>
             </Grid>
         </Grid>
