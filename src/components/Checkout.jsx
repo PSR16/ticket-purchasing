@@ -11,6 +11,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 const panelStylingLeft = {
     marginLeft:'20px', 
@@ -30,7 +31,7 @@ const panelStylingRight = {
 function Delivery() {
     return(
         <Box sx={panelStylingLeft}>
-            <h3>Delivery</h3>
+            <h3>Delivery <CheckCircleOutlineIcon style={{color: 'lightgreen'}} /></h3>
             <div>
                 <b>Mobile Entry - Free</b>
             </div>
@@ -43,6 +44,7 @@ function Delivery() {
 
 function PaymentMethod({cardList, updateCardList}) {
     const [addNewPaymentInfo, setAddNewPaymentInfo] = useState(false);
+    const [paymentSelected, setPaymentSelected] = useState(false);
 
     function handleAddPayment() {
         setAddNewPaymentInfo(true);
@@ -53,13 +55,17 @@ function PaymentMethod({cardList, updateCardList}) {
         setAddNewPaymentInfo(false);
     }
 
+    function handlePaymentSelected() {
+        setPaymentSelected(true);
+    }
+
     return (
         <Box sx={panelStylingLeft}>
-            <h3>Payment</h3>
+            <h3>Payment {paymentSelected ? <CheckCircleOutlineIcon style={{color: 'lightgreen'}} /> : null }</h3>
             <h4>Use Credit / Debit Card</h4>
             <div>
                 {
-                    cardList.length > 0 ? <Payment cardList={cardList}/> : null
+                    cardList.length > 0 ? <Payment cardList={cardList} onSelectPayment={handlePaymentSelected}/> : null
                 }
                 {
                     addNewPaymentInfo ? <AddPayment cardList={cardList} onNewPayment={handleNewPayment} /> : null
@@ -87,14 +93,14 @@ function Info({card}) {
     )
 }
 
-function Payment({cardList}) {
+function Payment({cardList, onSelectPayment}) {
     return(
         <FormControl>
             <RadioGroup>
             {
                 cardList.map((c) => {
                     return(
-                        <FormControlLabel key={c.id} value={c.id} control={<Radio />} label={<Info card={c}/>} />
+                        <FormControlLabel key={c.id} value={c.id} control={<Radio onClick={onSelectPayment}/>} label={<Info card={c}/>} />
                     )
                 })
             }
