@@ -111,6 +111,7 @@ function Payment({cardList, onSelectPayment}) {
 
 export default function Checkout({numTickets, show}) {
     const [cardList, setCardList] = useState([]);
+    const [canPlaceOrder, setCanPlaceOrder] = useState(false);
 
     const ticketsTotal = show.ticketCost * numTickets;
     const serviceFee = ticketmasterData.serviceFee * numTickets;
@@ -183,13 +184,15 @@ export default function Checkout({numTickets, show}) {
                         <b>*All Sales Final - No Refunds</b>
                     </div>
                     <FormGroup>
-                        <FormControlLabel control={<Checkbox />} label="I have read and agree to the current Terms of Use." />
+                        <FormControlLabel control={<Checkbox onClick={() => setCanPlaceOrder(true)} />} label="I have read and agree to the current Terms of Use." />
                     </FormGroup>
-                    <Button onClick={() => { alert(`Congratulations, you're going to see ${show.group} on ${show.date}!`); }}
-                            variant="contained"
-                            style={{marginTop: '20px'}}>
+                    <Button 
+                        disabled={!canPlaceOrder}
+                        onClick={() => { alert(`Congratulations, you're going to see ${show.group} on ${show.date}!`); }}
+                        variant="contained"
+                        style={{marginTop: '20px'}}>
                         Place Order
-                        </Button>
+                    </Button>
                 </Box>
             </Grid>
         </Grid>
