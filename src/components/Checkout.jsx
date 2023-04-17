@@ -172,8 +172,10 @@ export default function Checkout({numTickets, show}) {
                                 <h4>Fees</h4>
                                 Service Fee: ${ticketmasterData.serviceFee} x {numTickets}
                                 <span style={{float:'right'}}>${serviceFee}</span>
-                                <span style={{float:'left'}}>Order Processing Fee: </span>
+                               <div>
+                                Order Processing Fee: 
                                 <span style={{float:'right'}}>${ticketmasterData.orderProcessingFee}</span>
+                                </div>
                             </div>
                             <div>
                                 <h4>Delivery</h4>
