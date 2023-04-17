@@ -9,10 +9,27 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
+import AddIcon from '@mui/icons-material/Add';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+
+const panelStylingLeft = {
+    marginLeft:'20px', 
+    border: 1, 
+    borderColor: 'lightgray', 
+    p: 2, borderRadius: 1
+};
+
+const panelStylingRight = {
+    marginRight:'20px', 
+    border: 1, 
+    borderColor: 'lightgray', 
+    p:2, 
+    borderRadius: 1
+};
 
 function Delivery() {
     return(
-        <Box sx={{marginLeft:'20px', border: 1, borderColor: 'lightgray', p: 2, width: '90%', borderRadius: 1}}>
+        <Box sx={panelStylingLeft}>
             <h3>Delivery</h3>
             <div>
                 <b>Mobile Entry - Free</b>
@@ -37,9 +54,9 @@ function PaymentMethod({cardList, updateCardList}) {
     }
 
     return (
-        <Box sx={{marginLeft:'20px', border: 1, borderColor: 'lightgray', p: 2, borderRadius: 1}}>
+        <Box sx={panelStylingLeft}>
             <h3>Payment</h3>
-            <b>Use Credit / Debit Card</b>
+            <h4>Use Credit / Debit Card</h4>
             <div>
                 {
                     cardList.length > 0 ? <Payment cardList={cardList}/> : null
@@ -48,8 +65,13 @@ function PaymentMethod({cardList, updateCardList}) {
                     addNewPaymentInfo ? <AddPayment cardList={cardList} onNewPayment={handleNewPayment} /> : null
                 }
                 <div>
-                    <Button onClick={handleAddPayment}>Add New Card</Button>
+                <Button onClick={handleAddPayment}><AddIcon sx={{marginRight:'15px'}}/><CreditCardIcon sx={{marginRight:'25px'}} />Add New Card</Button>
                 </div>
+            </div>
+            <hr />
+            <div>
+                <h4>Or Pay With</h4>
+                <b>By using a digital wallet and continuing past this page, you have read and are accepting the Terms of Use</b>
             </div>
         </Box>
     )
@@ -101,7 +123,7 @@ export default function Checkout({numTickets, show}) {
     }
 
     return(
-        <Box sx={{width: '80%', margin: 'auto'}}>
+        <Box sx={{width: '80%', margin: 'auto', height: '400px'}}>
         <Paper elevation={3}>
         <h2>Checkout</h2>
         <Grid container spacing={2} sx={{textAlign: 'left'}}>
@@ -117,7 +139,7 @@ export default function Checkout({numTickets, show}) {
                 </Grid>
             </Grid>
             <Grid item xs={4}>
-                <Box sx={{marginRight:'20px', border: 1, borderColor: 'lightgray', p:2, borderRadius: 1}}>
+                <Box sx={panelStylingRight}>
                     <h3>Total</h3>
                     <Accordion>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -156,7 +178,7 @@ export default function Checkout({numTickets, show}) {
                     <FormGroup>
                         <FormControlLabel control={<Checkbox />} label="I have read and agree to the current Terms of Use." />
                     </FormGroup>
-                    <Button onClick={() => { alert('Thank you for your order!'); }}
+                    <Button onClick={() => { alert(`Congratulations, you're going to see ${show.group} on ${show.date}!`); }}
                             variant="contained"
                             style={{marginTop: '20px'}}>
                         Place Order
