@@ -46,11 +46,11 @@ function PaymentMethod({cardList, updateCardList}) {
     const [addNewPaymentInfo, setAddNewPaymentInfo] = useState(false);
     const [paymentSelected, setPaymentSelected] = useState(false);
 
-    function handleAddPayment() {
+    function handleAddCard() {
         setAddNewPaymentInfo(true);
     }
 
-    function handleNewPayment(paymentInfo) {
+    function handleSubmitNewPayment(paymentInfo) {
         updateCardList(paymentInfo);
         setAddNewPaymentInfo(false);
     }
@@ -68,10 +68,10 @@ function PaymentMethod({cardList, updateCardList}) {
                     cardList.length > 0 ? <Payment cardList={cardList} onSelectPayment={handlePaymentSelected}/> : null
                 }
                 {
-                    addNewPaymentInfo ? <AddPayment cardList={cardList} onNewPayment={handleNewPayment} /> : null
+                    addNewPaymentInfo ? <AddPayment cardList={cardList} onNewPayment={handleSubmitNewPayment} /> : null
                 }
                 <div>
-                <Button onClick={handleAddPayment}><AddIcon sx={{marginRight:'15px'}}/><CreditCardIcon sx={{marginRight:'25px'}} />Add New Card</Button>
+                <Button onClick={handleAddCard}><AddIcon sx={{marginRight:'15px'}}/><CreditCardIcon sx={{marginRight:'25px'}} />Add New Card</Button>
                 </div>
             </div>
             <hr />
@@ -132,7 +132,7 @@ export default function Checkout({numTickets, show}) {
 
     return(
         <Box sx={{width: '80%', margin: 'auto'}}>
-        <Paper elevation={3} style={{height: '800px'}}>
+        <Paper elevation={3} style={{height: 'auto'}}>
         <h2>Checkout</h2>
         <Grid container spacing={2} sx={{textAlign: 'left'}}>
             <Grid container item xs={8} spacing={2} direction="column">
