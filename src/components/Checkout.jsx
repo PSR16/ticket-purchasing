@@ -81,7 +81,7 @@ function Info({card}) {
     return(
         <div key={card.id}>
             <div>{card.type} - {card.lastFour}</div>
-            <div>{card.name} | exp. {card.expirationDate}</div>
+            <div>{card.nameOnCard} | exp. {card.expirationDate}</div>
             <div></div>
         </div>
     )
@@ -94,7 +94,7 @@ function Payment({cardList}) {
             {
                 cardList.map((c) => {
                     return(
-                        <FormControlLabel value={c.id} control={<Radio />} label={<Info card={c}/>} />
+                        <FormControlLabel key={c.id} value={c.id} control={<Radio />} label={<Info card={c}/>} />
                     )
                 })
             }
@@ -110,6 +110,7 @@ export default function Checkout({numTickets, show}) {
     const serviceFee = ticketmasterData.serviceFee * numTickets;
     const total = (ticketsTotal + ticketmasterData.orderProcessingFee + serviceFee).toFixed(2);
 
+
     function updateCardList(paymentInfo) {
         let id = cardList.length + 1;
         
@@ -123,11 +124,11 @@ export default function Checkout({numTickets, show}) {
     }
 
     return(
-        <Box sx={{width: '80%', margin: 'auto', height: '400px'}}>
-        <Paper elevation={3}>
+        <Box sx={{width: '80%', margin: 'auto'}}>
+        <Paper elevation={3} style={{height: '800px'}}>
         <h2>Checkout</h2>
         <Grid container spacing={2} sx={{textAlign: 'left'}}>
-            <Grid container item xs={8} spacing={2}>
+            <Grid container item xs={8} spacing={2} direction="column">
                 <Grid item>
                     <Delivery />
                 </Grid>
